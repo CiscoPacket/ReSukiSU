@@ -54,7 +54,6 @@ fun NavigationBar(
     // 是否隐藏 badge
     val homeViewModel = koinViewModel<HomeViewModel>()
     val uiState by homeViewModel.uiState.collectAsStateWithLifecycle()
-    val isHideOtherInfo = uiState.isHideOtherInfo
     val superuserCount = uiState.systemInfo.superuserCount
     val moduleCount = uiState.systemInfo.moduleCount
 
@@ -85,7 +84,6 @@ fun NavigationBar(
                     },
                     superuserCount = superuserCount,
                     moduleCount = moduleCount,
-                    isHideOtherInfo = isHideOtherInfo,
                 )
             }
         }
@@ -117,7 +115,6 @@ fun NavigationBar(
                     },
                     superuserCount = superuserCount,
                     moduleCount = moduleCount,
-                    isHideOtherInfo = isHideOtherInfo,
                 )
             }
         }
@@ -131,7 +128,6 @@ private fun NavigationRailItem(
     onClick: () -> Unit,
     superuserCount: Int,
     moduleCount: Int,
-    isHideOtherInfo: Boolean
 ) {
     WideNavigationRailItem(
         railExpanded = false,
@@ -144,7 +140,6 @@ private fun NavigationRailItem(
                         dest = destination,
                         superUser = superuserCount,
                         module = moduleCount,
-                        isHideOtherInfo = isHideOtherInfo,
                     )
                 }
             ) {
@@ -174,7 +169,6 @@ private fun RowScope.BottomBarNavigationItem(
     onClick: () -> Unit,
     superuserCount: Int,
     moduleCount: Int,
-    isHideOtherInfo: Boolean
 ) {
     NavigationBarItem(
         selected = isSelected,
@@ -186,7 +180,6 @@ private fun RowScope.BottomBarNavigationItem(
                         dest = destination,
                         superUser = superuserCount,
                         module = moduleCount,
-                        isHideOtherInfo = isHideOtherInfo,
                     )
                 }
             ) {
@@ -215,7 +208,6 @@ private fun DestinationBadge(
     dest: BottomBarDestination,
     superUser: Int,
     module: Int,
-    isHideOtherInfo: Boolean
 ) {
     val count = when (dest) {
         BottomBarDestination.SuperUser -> superUser
@@ -224,7 +216,7 @@ private fun DestinationBadge(
     }
 
     AnimatedVisibility(
-        visible = count > 0 && !isHideOtherInfo,
+        visible = count > 0,
         enter = fadeIn(),
         exit = fadeOut()
     ) {
