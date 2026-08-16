@@ -413,6 +413,7 @@ fun SearchAppBar(
     searchBarPlaceHolderText: String,
 ) {
     val themeConfig: ThemeConfig = koinInject()
+    val cardConfig: CardConfig = koinInject()
     val textFieldState = rememberTextFieldState(initialText = searchText)
     val focusManager = LocalFocusManager.current
     val keyboardController = LocalSoftwareKeyboardController.current
@@ -477,11 +478,11 @@ fun SearchAppBar(
             windowInsets = TopAppBarDefaults.windowInsets.add(WindowInsets(left = 12.dp)),
             colors = TopAppBarDefaults.topAppBarColors(
                 containerColor =
-                    if (themeConfig.backgroundImageLoaded) Color.Transparent
-                    else MaterialTheme.colorScheme.surfaceContainer,
+                    if (themeConfig.isEnableBlurExp) Color.Transparent
+                    else MaterialTheme.colorScheme.surfaceContainer.copy(alpha = cardConfig.cardAlpha),
                 scrolledContainerColor =
-                    if (themeConfig.backgroundImageLoaded) Color.Transparent
-                    else MaterialTheme.colorScheme.surfaceContainer,
+                    if (themeConfig.isEnableBlurExp) Color.Transparent
+                    else MaterialTheme.colorScheme.surfaceContainer.copy(alpha = cardConfig.cardAlpha),
             ),
         )
 

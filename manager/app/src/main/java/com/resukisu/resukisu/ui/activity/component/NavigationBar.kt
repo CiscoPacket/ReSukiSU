@@ -46,28 +46,30 @@ import org.koin.compose.viewmodel.koinViewModel
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalMaterial3ExpressiveApi::class)
 @Composable
 fun NavigationBar(
+    modifier: Modifier = Modifier,
     destinations: List<BottomBarDestination>,
     isBottomBar: Boolean
 ) {
     val themeConfig: ThemeConfig = koinInject()
     val cardConfig: CardConfig = koinInject()
-    // 是否隐藏 badge
     val homeViewModel = koinViewModel<HomeViewModel>()
     val uiState by homeViewModel.uiState.collectAsStateWithLifecycle()
     val superuserCount = uiState.systemInfo.superuserCount
     val moduleCount = uiState.systemInfo.moduleCount
-
-    // 翻页处理
     val page = LocalSelectedPage.current
     val handlePageChange = LocalHandlePageChange.current
 
     if (isBottomBar) {
         FlexibleBottomAppBar(
-            modifier = Modifier
+            modifier = modifier
                 .windowInsetsPadding(
                     WindowInsets.navigationBars.only(WindowInsetsSides.Horizontal)
                 )
-                .blurEffect(),
+                .blurEffect(
+                    compensateHorizontalOverscroll = true,
+                    compensateVerticalOverscroll = true,
+                    useFixedSurfaceBoundsForOverscroll = true,
+                ),
             containerColor =
                 if (themeConfig.isEnableBlur)
                     Color.Transparent
@@ -89,11 +91,15 @@ fun NavigationBar(
         }
     } else {
         WideNavigationRail(
-            modifier = Modifier
+            modifier = modifier
                 .windowInsetsPadding(
                     WindowInsets.navigationBars.only(WindowInsetsSides.Horizontal)
                 )
-                .blurEffect(),
+                .blurEffect(
+                    compensateHorizontalOverscroll = true,
+                    compensateVerticalOverscroll = false,
+                    useFixedSurfaceBoundsForOverscroll = true,
+                ),
             colors = WideNavigationRailColors(
                 containerColor =
                     if (themeConfig.isEnableBlur)
